@@ -5,7 +5,8 @@ import os,sys
 BASE_DIR=os.path.dirname(os.path.dirname(__file__))
 
 #日志路径
-log_path=os.path.join(BASE_DIR,'log')
+log_path=os.path.join(BASE_DIR,'log','log.txt')
 
 
-print(BASE_DIR)
+if __name__=="__main__":
+    print(BASE_DIR)
