@@ -9,13 +9,13 @@ def logger(log_type):
 
     #创建屏幕输出
     ch=logging.StreamHandler()
-    ch.setLevel('DEBUG') #设置输出级别
+    ch.setLevel(settings.LOG_TYPE) #设置输出级别
 
     #创建文件输出
     #日志路径
-    log_file='%s'%(settings.log_path)
+    log_file='%s\%s'%(settings.log_path,settings.LOG_FILE[log_type])
     fh=logging.FileHandler(log_file)
-    fh.setLevel('DEBUG')
+    fh.setLevel(settings.LOG_TYPE)
 
     #输出信息
     formatter = logging.Formatter('%(asctime)s - %(filename)s -%(name)s - %(levelname)s -logmsg:%(message)s')

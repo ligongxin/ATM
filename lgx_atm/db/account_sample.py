@@ -15,6 +15,6 @@ acc_dit={
 
 # print(json.dumps(acc_dit))
 
-with open('1234.json','w') as f:
+with open('accounts/1234.json', 'w') as f:
     f.write(json.dumps(acc_dit))
     f.close()

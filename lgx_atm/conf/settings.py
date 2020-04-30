@@ -5,9 +5,22 @@ import os,sys
 BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #日志路径
-log_path=os.path.join(BASE_DIR,'log','log.txt')
+log_path=os.path.join(BASE_DIR,'log')
 
+#日志保存文件
+LOG_FILE={
+    'account':"account.log"
+}
 
+#日志收集类型
+LOG_TYPE='DEBUG'
+
+#储存类型，file，db
+DATABASE={
+    'engine':'file_storage',
+    'name':'accounts',
+    'path':'%s/db'%BASE_DIR
+}
 
 
 if __name__=="__main__":

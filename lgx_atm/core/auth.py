@@ -3,7 +3,7 @@
 #创建时间 :2020/4/3012:39
 #文件     :
 #IDE      :PyCharm
-from lgx_atm.core import db_handler
+from lgx_atm.core import accounts
 import time
 
 def acc_auth(account,password):
@@ -11,13 +11,13 @@ def acc_auth(account,password):
 
     # 获取用户信息
     # account_data={'account':'562500','password':'123456'}
-    account_data=db_handler.read_account(account)
+    account_data=accounts.load_current_account(account)
     if account_data:
         if account_data['password'] == password:
         #取改账户的过期时间，判断是否过去
             exp_time_sample=time.mktime(time.strptime(account_data['expire_date'],"%Y-%m-%d"))
             if exp_time_sample < time.time():
-                print('\033[31m 您的卡：{}已过期!'.format(account))
+                print('您的卡：{}已过期!'.format(account))
                 return
             else:
                 return account_data
