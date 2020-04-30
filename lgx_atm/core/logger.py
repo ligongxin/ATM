@@ -18,7 +18,7 @@ def logger(log_type):
     fh.setLevel('DEBUG')
 
     #输出信息
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s -logmsg:%(message)s')
+    formatter = logging.Formatter('%(asctime)s - %(filename)s -%(name)s - %(levelname)s -logmsg:%(message)s')
 
     ch.setFormatter(formatter)
     fh.setFormatter(formatter)
