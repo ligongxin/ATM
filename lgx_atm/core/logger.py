@@ -5,11 +5,11 @@ from lgx_atm.conf import settings
 
 def logger(log_type):
     logger=logging.getLogger(log_type) #日志名称
-    logger.setLevel('DEBUG') #设置输出级别
+    logger.setLevel(settings.LOG_TYPE) #设置输出级别
 
     #创建屏幕输出
     ch=logging.StreamHandler()
-    ch.setLevel(settings.LOG_TYPE) #设置输出级别
+    ch.setLevel('ERROR') #设置输出级别
 
     #创建文件输出
     #日志路径

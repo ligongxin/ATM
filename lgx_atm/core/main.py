@@ -4,7 +4,7 @@
 #文件     :
 #IDE      :PyCharm
 from lgx_atm.core import logger
-from lgx_atm.core import auth,accounts,transation
+from lgx_atm.core import auth,accounts,transaction
 
 
 #user_data,记住用户是否登录
@@ -18,6 +18,7 @@ user_data={
 # 主流程，用户登录 auth_login
 #定义日志
 account_logger=logger.logger('account')  #账户日志
+transaction_logger=logger.logger('transaction') #交易记录
 
 def account_info(acc_data):
     acc_info='''------------- BALANCE INFO ---------------
@@ -38,9 +39,17 @@ def repay(acc_data):
     Balance:{1}元'''.format(new_account_data['credit'],new_account_data['balance'])
     print(current_balance)
     #进行还款操作
-
-    transation.make_transation('repay')
-
+    repay_flag=True
+    while repay_flag:
+        repay_amount=input('"\033[33;1mInput repay amount:\33[0m').strip()
+        if len(repay_amount) > 0 and repay_amount.isdigit():
+            new_balance=transaction.make_transaction(transaction_logger,acc_data,'repay',repay_amount)
+            if new_balance:
+                print('new_balance:%s'%new_balance)
+        else:
+            print('repay amount is valid,')
+        if repay_amount == 'b':
+            repay_flag =False
 
 def withdraw(acc_data):
     pass
@@ -79,7 +88,7 @@ def interactive(acc_data):
         print(menu)
         user_option=input('>>:').strip()
         if user_option in menu_dic:
-            print('accdata:%s'%acc_data)
+            # print('accdata:%s'%acc_data)
             #执行对应的业务
             menu_dic[user_option](acc_data)
         else:

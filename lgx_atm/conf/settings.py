@@ -9,7 +9,8 @@ log_path=os.path.join(BASE_DIR,'log')
 
 #日志保存文件
 LOG_FILE={
-    'account':"account.log"
+    'account':"account.log",
+    'transaction':"transaction.log"
 }
 
 #日志收集类型
@@ -23,7 +24,7 @@ DATABASE={
 }
 
 TRANSATION_TYPE={
-    'repay':{'action':'plus','interset':0,
+    'repay':{'action':'plus','interest':0,
              }
 }
 
