@@ -21,6 +21,7 @@ account_logger=logger.logger('account')  #账户日志
 transaction_logger=logger.logger('transaction') #交易记录
 
 def account_info(acc_data):
+    '''账户信息'''
     acc_info='''------------- BALANCE INFO ---------------
     卡号:{0}
     余额:{1}
@@ -41,7 +42,7 @@ def repay(acc_data):
     #进行还款操作
     repay_flag=True
     while repay_flag:
-        repay_amount=input('"\033[33;1mInput repay amount:\33[0m').strip()
+        repay_amount=input('\033[33;1mInput repay amount:\33[0m').strip()
         if len(repay_amount) > 0 and repay_amount.isdigit():
             new_balance=transaction.make_transaction(transaction_logger,acc_data,'repay',repay_amount)
             if new_balance:
@@ -52,7 +53,24 @@ def repay(acc_data):
             repay_flag =False
 
 def withdraw(acc_data):
-    pass
+    '''取款'''
+    # 获取最新的数据
+    new_account_data = accounts.load_current_account(acc_data['id'])
+    current_balance = '''------------- BALANCE INFO ---------------
+        Credit:{0}元
+        Balance:{1}元'''.format(new_account_data['credit'], new_account_data['balance'])
+    print(current_balance)
+    #进行存款操作
+    withdraw_flag=True
+    while withdraw_flag:
+        withdraw_amount=input('\033[33;1mInput withdraw amount:\33[0m').strip()
+        if len(withdraw_amount) > 0 and withdraw_amount.isdigit():
+            new_creidt=transaction.make_transaction(transaction_logger,acc_data,'withdraw',withdraw_amount)
+            print('new balance:%s'%new_creidt)
+        else:
+            print('withdraw amount is valid')
+        if withdraw_amount == 'b':
+            withdraw_flag = False
 
 def transfer(acc_data):
     pass

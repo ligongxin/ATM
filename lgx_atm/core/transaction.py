@@ -14,7 +14,7 @@ def make_transaction(log_obf, account_data, type, amount):
         ole_balance = account_data['balance']
         if settings.TRANSATION_TYPE[type]['action'] == 'plus':
             new_balance = ole_balance + amount + interest
-        elif settings.TRANSATION_TYPE[type]['action'] == 'mins':
+        elif settings.TRANSATION_TYPE[type]['action'] == 'minus':
             new_balance = ole_balance - amount - interest
             if new_balance < 0:
                 print('您的的额度不足，当前额度{0}，花费余额{1}，还缺少{2}'.format(ole_balance, new_balance, new_balance - ole_balance))
