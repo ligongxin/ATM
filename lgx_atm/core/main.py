@@ -4,7 +4,7 @@
 #文件     :
 #IDE      :PyCharm
 from lgx_atm.core import logger
-from lgx_atm.core import auth,accounts
+from lgx_atm.core import auth,accounts,transation
 
 
 #user_data,记住用户是否登录
@@ -20,16 +20,26 @@ user_data={
 account_logger=logger.logger('account')  #账户日志
 
 def account_info(acc_data):
-    print(acc_data)
+    acc_info='''------------- BALANCE INFO ---------------
+    卡号:{0}
+    余额:{1}
+    额度:{2}
+    过期时间:{3}
+    还款日:{4}
+    '''.format(acc_data['id'],acc_data['credit'],acc_data['balance'],acc_data['expire_date'],acc_data['pay_day'])
+    print(acc_info)
 
 def repay(acc_data):
     '''还款'''
     #获取最新的数据
     new_account_data=accounts.load_current_account(acc_data['id'])
     current_balance='''------------- BALANCE INFO ---------------
-    Credit:{0}
-    Balance:{1}'''.format(new_account_data['credit'],new_account_data['balance'])
+    Credit:{0}元
+    Balance:{1}元'''.format(new_account_data['credit'],new_account_data['balance'])
     print(current_balance)
+    #进行还款操作
+
+    transation.make_transation('repay')
 
 
 def withdraw(acc_data):

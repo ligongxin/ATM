@@ -22,6 +22,12 @@ DATABASE={
     'path':'%s/db'%BASE_DIR
 }
 
+TRANSATION_TYPE={
+    'repay':{'action':'plus','interset':0,
+             }
+}
+
+
 
 if __name__=="__main__":
     print(BASE_DIR)
