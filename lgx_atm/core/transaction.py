@@ -50,7 +50,7 @@ def make_transaction(log_obj, account_data, type, amount, payer_id=0, *other):
             elif settings.TRANSATION_TYPE[type]['action'] == 'minus':
                 new_balance = old_balance - amount - interest
                 if new_balance < 0:
-                    print('您的的额度不足，当前额度{0}，花费余额{1}，还缺少{2}'.format(old_balance, new_balance, new_balance - ole_balance))
+                    print('您的的额度不足，当前额度{0}，花费余额{1}，还缺少{2}'.format(old_balance, new_balance, new_balance - old_balance))
                     return
             # 更新账户额度
             account_data['balance'] = new_balance

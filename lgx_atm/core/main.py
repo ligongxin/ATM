@@ -6,6 +6,7 @@
 from lgx_atm.core import logger
 from lgx_atm.core import auth, accounts, transaction
 import re
+from lgx_atm.core.auth import login_required
 
 # user_data,记住用户是否登录
 user_data = {
@@ -20,6 +21,7 @@ account_logger = logger.logger('account')  # 账户日志
 transaction_logger = logger.logger('transaction')  # 交易记录
 
 
+@login_required
 def account_info(acc_data):
     '''账户信息'''
     acc_info = '''------------- BALANCE INFO ---------------
@@ -32,10 +34,11 @@ def account_info(acc_data):
     print(acc_info)
 
 
+@login_required
 def repay(acc_data):
     '''还款'''
     # 获取最新的数据
-    new_account_data = accounts.load_current_account(acc_data['id'])
+    new_account_data = accounts.load_current_account(acc_data['account_id'])
     current_balance = '''------------- BALANCE INFO ---------------
     Credit:{0}元
     Balance:{1}元'''.format(new_account_data['credit'], new_account_data['balance'])
@@ -45,19 +48,20 @@ def repay(acc_data):
     while repay_flag:
         repay_amount = input('\033[33;1mInput repay amount:\33[0m').strip()
         if len(repay_amount) > 0 and repay_amount.isdigit():
-            new_balance = transaction.make_transaction(transaction_logger, acc_data, 'repay', repay_amount)
+            new_balance = transaction.make_transaction(transaction_logger, new_account_data, 'repay', repay_amount)
             if new_balance:
-                print('new_balance:%s' % new_balance)
+                print('new_balance:%s' % new_balance['balance'])
         else:
             print('repay amount is valid,')
         if repay_amount == 'b':
             repay_flag = False
 
 
+@login_required
 def withdraw(acc_data):
     '''取款'''
     # 获取最新的数据
-    new_account_data = accounts.load_current_account(acc_data['id'])
+    new_account_data = accounts.load_current_account(acc_data['account_id'])
     current_balance = '''------------- BALANCE INFO ---------------
         Credit:{0}元
         Balance:{1}元'''.format(new_account_data['credit'], new_account_data['balance'])
@@ -67,7 +71,8 @@ def withdraw(acc_data):
     while withdraw_flag:
         withdraw_amount = input('\033[33;1mInput withdraw amount:\33[0m').strip()
         if len(withdraw_amount) > 0 and withdraw_amount.isdigit():
-            new_balance = transaction.make_transaction(transaction_logger, acc_data, 'withdraw', withdraw_amount)
+            new_balance = transaction.make_transaction(transaction_logger, new_account_data, 'withdraw',
+                                                       withdraw_amount)
             print('new balance:%s' % new_balance['balance'])
         else:
             print('withdraw amount is valid')
@@ -75,10 +80,11 @@ def withdraw(acc_data):
             withdraw_flag = False
 
 
+@login_required
 def transfer(acc_data):
     '''转账'''
     # 获取最新的数据
-    new_account_data = accounts.load_current_account(acc_data['id'])
+    new_account_data = accounts.load_current_account(acc_data['account_id'])
     current_balance = '''------------- BALANCE INFO ---------------
             Credit:{0}元
             Balance:{1}元'''.format(new_account_data['credit'], new_account_data['balance'])
@@ -91,7 +97,8 @@ def transfer(acc_data):
             # 获取转账人的账户信息
             transfer_amount = input('请输入转账金额：').strip()
             if len(transfer_amount) > 0 and transfer_amount.isdigit():
-                new_credit = transaction.make_transaction(transaction_logger, acc_data, 'transfer', transfer_amount,
+                new_credit = transaction.make_transaction(transaction_logger, new_account_data, 'transfer',
+                                                          transfer_amount,
                                                           payer_id)
                 if new_credit:
                     print('new credit:%s' % new_credit['credit'])
@@ -103,15 +110,17 @@ def transfer(acc_data):
             print('请输入正确的账号')
 
 
+@login_required
 def pay_check(acc_data):
     # 读取日志
     # 日志路径
     log_data = logger.pay_log('transaction')
     for i in log_data:
-        if re.findall(str(acc_data['id']), i):
+        if re.findall(str(acc_data['account_id']), i):
             print(i)
 
 
+@login_required
 def logout(acc_data):
     print('Welcome to come again!')
     exit()
@@ -141,7 +150,7 @@ def interactive(acc_data):
         print(menu)
         user_option = input('>>:').strip()
         if user_option in menu_dic:
-            # print('accdata:%s'%acc_data)
+            # print('accdata:%s' % acc_data)
             # 执行对应的业务
             menu_dic[user_option](acc_data)
         else:
@@ -154,8 +163,13 @@ def run():
     # 展示业务菜单
     if user_data['is_authenticated']:
         user_data['account_data'] = acc_data
-        interactive(acc_data)
+        interactive(user_data)
 
 
 if __name__ == '__main__':
     run()
+
+    # accdata = {'id': 1234, 'password': '123456', 'credit': 9000.0, 'balance': 15000, 'enroll_date': '2016-01-02',
+    #            'expire_date': '2021-01-01', 'pay_day': 22, 'status': 0}
+    #
+    # transfer(accdata)

@@ -6,6 +6,15 @@
 from lgx_atm.core import accounts
 import time
 
+def login_required(func):
+    '''验证是否登录'''
+    def wrapper(*args,**kwargs):
+        if args[0].get('is_authenticated'):
+            return func(*args,**kwargs)
+        else:
+            print('你未登录')
+    return wrapper
+
 
 def acc_auth(account, password):
     '''账户验证'''
