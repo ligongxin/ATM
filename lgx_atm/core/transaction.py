@@ -40,7 +40,7 @@ def make_transaction(log_obj, account_data, type, amount, payer_id=0, *other):
                 else:
                     print('账户余额不足，转账失败 ')
             # else:
-            #     print('%s账户不存在' % payer_id)
+                print('%s账户不存在' % payer_id)
             #     return
         # 还款，取款，
         else:

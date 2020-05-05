@@ -18,7 +18,7 @@ def load_current_account(account):
             f.close()
             return account_data
     else:
-        print('账号不存在')
+        # print('账号不存在')
         return
 
 

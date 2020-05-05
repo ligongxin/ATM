@@ -66,18 +66,23 @@ def withdraw(acc_data):
         Credit:{0}元
         Balance:{1}元'''.format(new_account_data['credit'], new_account_data['balance'])
     print(current_balance)
-    # 进行存款操作
-    withdraw_flag = True
-    while withdraw_flag:
-        withdraw_amount = input('\033[33;1mInput withdraw amount:\33[0m').strip()
-        if len(withdraw_amount) > 0 and withdraw_amount.isdigit():
-            new_balance = transaction.make_transaction(transaction_logger, new_account_data, 'withdraw',
-                                                       withdraw_amount)
-            print('new balance:%s' % new_balance['balance'])
-        else:
-            print('withdraw amount is valid')
-        if withdraw_amount == 'b':
-            withdraw_flag = False
+    if new_account_data['status'] == 0 :
+        # 进行存款操作
+        withdraw_flag = True
+        while withdraw_flag:
+            withdraw_amount = input('\033[33;1mInput withdraw amount:\33[0m').strip()
+            if len(withdraw_amount) > 0 and withdraw_amount.isdigit():
+                new_balance = transaction.make_transaction(transaction_logger, new_account_data, 'withdraw',
+                                                           withdraw_amount)
+                print('new balance:%s' % new_balance['balance'])
+            else:
+                print('withdraw amount is valid')
+            if withdraw_amount == 'b':
+                withdraw_flag = False
+    elif new_account_data['status'] == 1:
+        print('该账户已锁定')
+    else:
+        print('该账户已挂失')
 
 
 @login_required
@@ -123,6 +128,7 @@ def pay_check(acc_data):
 @login_required
 def logout(acc_data):
     print('Welcome to come again!')
+    acc_data['is_authenticated'] = False
     exit()
 
 

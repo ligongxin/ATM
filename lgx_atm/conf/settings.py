@@ -8,6 +8,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 日志路径
 log_path = os.path.join(BASE_DIR, 'log')
 
+# 账户路径
+account_path = os.path.join(BASE_DIR, 'db', 'accounts')
+
 # 日志保存文件
 LOG_FILE = {
     'account': "account.log",

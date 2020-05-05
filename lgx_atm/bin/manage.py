@@ -1,3 +1,7 @@
-# __author__:'lgx'
-# date:2020/4/29 0029
+# coding=gbk
 
+from lgx_atm.manage import main
+
+
+if __name__ == '__main__':
+    main.run()
