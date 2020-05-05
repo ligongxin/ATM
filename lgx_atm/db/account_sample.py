@@ -3,7 +3,7 @@
 import json
 
 acc_dit = {
-    'id': 1234,
+    'id': 1,
     'password': '123456',
     'credit': 15000,  # ∂Ó∂»
     'balance': 15000,  # ”‡∂Ó

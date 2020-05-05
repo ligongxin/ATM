@@ -65,15 +65,32 @@ def withdraw(acc_data):
     while withdraw_flag:
         withdraw_amount=input('\033[33;1mInput withdraw amount:\33[0m').strip()
         if len(withdraw_amount) > 0 and withdraw_amount.isdigit():
-            new_creidt=transaction.make_transaction(transaction_logger,acc_data,'withdraw',withdraw_amount)
-            print('new balance:%s'%new_creidt)
+            new_balance=transaction.make_transaction(transaction_logger,acc_data,'withdraw',withdraw_amount)
+            print('new balance:%s'%new_balance['balance'])
         else:
             print('withdraw amount is valid')
         if withdraw_amount == 'b':
             withdraw_flag = False
 
 def transfer(acc_data):
-    pass
+    '''转账'''
+    # 获取最新的数据
+    new_account_data = accounts.load_current_account(acc_data['id'])
+    current_balance = '''------------- BALANCE INFO ---------------
+            Credit:{0}元
+            Balance:{1}元'''.format(new_account_data['credit'], new_account_data['balance'])
+    print(current_balance)
+    #转账
+    payer_id=input('需要转账的卡号：').strip()
+    if len(payer_id) > 0 :
+        # 获取转账人的账户信息
+        transfer_amount=input('请输入转账金额：').strip()
+        if len(transfer_amount) >0 and transfer_amount.isdigit():
+            new_credit=transaction.make_transaction(transaction_logger,acc_data,'transfer',transfer_amount,payer_id)
+            if new_credit:
+                print('new credit:%s'%new_credit['credit'])
+    else:
+        print('请输入正确的账号')
 
 def pay_check(acc_data):
     pass
@@ -106,7 +123,7 @@ def interactive(acc_data):
         print(menu)
         user_option=input('>>:').strip()
         if user_option in menu_dic:
-            # print('accdata:%s'%acc_data)
+            print('accdata:%s'%acc_data)
             #执行对应的业务
             menu_dic[user_option](acc_data)
         else:
