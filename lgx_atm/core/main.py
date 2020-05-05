@@ -5,6 +5,7 @@
 #IDE      :PyCharm
 from lgx_atm.core import logger
 from lgx_atm.core import auth,accounts,transaction
+import re
 
 
 #user_data,记住用户是否登录
@@ -81,19 +82,31 @@ def transfer(acc_data):
             Balance:{1}元'''.format(new_account_data['credit'], new_account_data['balance'])
     print(current_balance)
     #转账
-    payer_id=input('需要转账的卡号：').strip()
-    if len(payer_id) > 0 :
-        # 获取转账人的账户信息
-        transfer_amount=input('请输入转账金额：').strip()
-        if len(transfer_amount) >0 and transfer_amount.isdigit():
-            new_credit=transaction.make_transaction(transaction_logger,acc_data,'transfer',transfer_amount,payer_id)
-            if new_credit:
-                print('new credit:%s'%new_credit['credit'])
-    else:
-        print('请输入正确的账号')
+    transfer_flag=True
+    while transfer_flag:
+        payer_id=input('需要转账的卡号：').strip()
+        if len(payer_id) > 0 :
+            # 获取转账人的账户信息
+            transfer_amount=input('请输入转账金额：').strip()
+            if len(transfer_amount) >0 and transfer_amount.isdigit():
+                new_credit=transaction.make_transaction(transaction_logger,acc_data,'transfer',transfer_amount,payer_id)
+                if new_credit:
+                    print('new credit:%s'%new_credit['credit'])
+            else:
+                print('请输入正确的金额')
+            if payer_id == 'b':
+                transfer_flag = False
+        else:
+            print('请输入正确的账号')
+
 
 def pay_check(acc_data):
-    pass
+    #读取日志
+    # 日志路径
+    log_data=logger.pay_log('transaction')
+    for i in log_data:
+        if re.findall(str(acc_data['id']),i):
+            print(i)
 
 def logout(acc_data):
     print('Welcome to come again!')
@@ -104,8 +117,8 @@ def interactive(acc_data):
     menu = u'''
     ------- Oldboy Bank ---------
     \033[32;1m1.  账户信息
-    2.  还款(功能已实现)
-    3.  取款(功能已实现)
+    2.  还款
+    3.  取款
     4.  转账
     5.  账单
     6.  退出
@@ -123,7 +136,7 @@ def interactive(acc_data):
         print(menu)
         user_option=input('>>:').strip()
         if user_option in menu_dic:
-            print('accdata:%s'%acc_data)
+            # print('accdata:%s'%acc_data)
             #执行对应的业务
             menu_dic[user_option](acc_data)
         else:

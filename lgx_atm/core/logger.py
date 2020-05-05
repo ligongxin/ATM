@@ -1,6 +1,6 @@
 # __author__:'lgx'
 # date:2020/4/29 0029
-import logging
+import logging,re
 from lgx_atm.conf import settings
 
 def logger(log_type):
@@ -27,7 +27,19 @@ def logger(log_type):
     logger.addHandler(fh)
     return logger
 
+def pay_log(log_type):
+    log_file = '%s\%s' % (settings.log_path, settings.LOG_FILE[log_type])
+    with open(log_file,'r') as f:
+        log_data=f.readlines()
+        # for i in log_data:
+        #     if re.findall('1234',i):
+        #         print(i)
+
+        return log_data
+
 if __name__=='__main__':
-    log_type='assount'
-    logger=logger(log_type)
-    logger.info('test')
+    # log_type='assount'
+    # logger=logger(log_type)
+    # logger.info('test')
+    acc_data={'id':1234}
+    pay_log('transaction')
