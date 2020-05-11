@@ -1,0 +1,12 @@
+2020-04-30 00:14:36,582 - atm - INFO - test
+2020-04-30 00:14:49,202 - atm - INFO - test
+2020-04-30 00:15:26,568 - atm - INFO - test
+2020-04-30 00:17:28,208 - atm - INFO - logger.py-日志信息： test
+2020-04-30 00:18:28,957 - atm - INFO -日志信息:test
+2020-04-30 00:20:08,657 - assount - INFO -日志信息:test
+2020-04-30 00:20:54,281 - assount - INFO -logmsg:test
+2020-04-30 21:31:38,521 - account - INFO -logmsg:登录成功
+2020-04-30 21:32:48,512 - auth.py -account - INFO -logmsg:登录成功
+2020-04-30 22:53:05,023 - auth.py -account - INFO -logmsg:登录成功
+2020-04-30 23:04:19,444 - auth.py -account - ERROR -logmsg:account:11 三次失败，退出程序
+2020-04-30 23:04:46,879 - auth.py -account - INFO -logmsg:登录成功
